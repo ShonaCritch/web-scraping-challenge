@@ -67,10 +67,10 @@ def scrape():
     table = pd.read_html(url_facts)
     
     mars_facts_df = table[2]
-    mars_facts_df.columns = ["What", "Fact"]
-    mars_facts_df.set_index("What", inplace=True)
+    mars_facts_df.columns = ["","Mars"]
+    mars_facts_df.set_index("Mars", inplace=True)
     
-    mars_html_table1 = mars_facts_df.to_html()
+    mars_html_table = mars_facts_df.to_html()
 
     
     # Mars Hemispheres - image urls with titles:
@@ -96,16 +96,17 @@ def scrape():
 
     # loop over results to get hemi title and img url
     for hemi in hemispheres:
-    # scrape the link hemi title
-    title_hemi = hemi.find('div', class_='description').h3.text
-    # scrape the link to hemi img
-    img_url = hemi.find('div', class_='description').a["href"]
-    #get end of url for tif download file
-    start_hemi = img_url.find("p/")+1
-    end_hemi = len(img_url)
-    for_tif=img_url[start_hemi:end_hemi]
-    img_hemi_url=f'{base_hemi_url}{for_tif}.tif'
-    sleep.time(2.0)
+        # scrape the link hemi title
+        title_hemi = hemi.find('div', class_='description').h3.text
+        # scrape the link to hemi img
+        img_url = hemi.find('div', class_='description').a["href"]
+        #get end of url for tif download file
+        start_hemi = img_url.find("p/")+1
+        end_hemi = len(img_url)
+        for_tif=img_url[start_hemi:end_hemi]
+        img_hemi_url=f'{base_hemi_url}{for_tif}.tif/full.jpg'
+    
+    time.sleep(20.0)
     
     # make title and img_url into dict and store in list
     hemi_dict = {}
@@ -113,7 +114,7 @@ def scrape():
     hemi_dict['img_url'] = img_hemi_url
     
     hemisphere_image_urls.append(hemi_dict)
-        time.sleep(15.0)
+    time.sleep(15.0)
         
     # Creat a dictionary that holds all the scraped data
     mars_scrpd = {}
